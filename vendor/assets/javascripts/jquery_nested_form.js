@@ -10,6 +10,12 @@
       var link      = e.currentTarget;
       var assoc     = $(link).data('association');                // Name of child
       var blueprint = $('#' + $(link).data('blueprint-id'));
+      var blueprintUniqId = $(link).data().blueprintUniqId
+
+      if (blueprintUniqId) {
+        blueprint = $('[data-uniq-id="' + blueprintUniqId + '"]')
+      }
+
       var content   = blueprint.data('blueprint');                // Fields template
 
       // Make the context correct by replacing <parents> with the generated ID
@@ -69,13 +75,13 @@
     removeFields: function(e) {
       var $link = $(e.currentTarget),
           assoc = $link.data('association'); // Name of child to be removed
-      
+
       var hiddenField = $link.prev('input[type=hidden]');
       hiddenField.val('1');
-      
+
       var field = $link.closest('.fields');
       field.hide();
-      
+
       field
         .trigger({ type: 'nested:fieldRemoved', field: field })
         .trigger({ type: 'nested:fieldRemoved:' + assoc, field: field });
